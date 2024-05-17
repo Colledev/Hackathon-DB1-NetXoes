@@ -1,14 +1,14 @@
-const { createUser } = require("../repositorys/usersRepository");
+const { createUser, loginUser } = require("../repositorys/usersRepository");
 const { hashPassword } = require("../utils/password");
 const { validationResultCheck } = require("../validators/index");
 const { isUniqueEmailError } = require("../utils/errorMessages");
+const { generateToken } = require("../utils/token");
 
 const createUserController = async (req, res) => {
+    if (validationResultCheck(req, res)) {
+        return;
+    }
     try {
-        if (validationResultCheck(req, res)) {
-            return;
-        }
-
         req.body.password = hashPassword(req.body.password);
         const newUser = await createUser(req.body);
         res.status(201).json(newUser);
@@ -21,6 +21,21 @@ const createUserController = async (req, res) => {
     }
 };
 
+const loginUserController = async (req, res) => {
+    if (validationResultCheck(req, res)) {
+        return;
+    }
+    try {
+        const user = await loginUser(req.body);
+
+        const token = generateToken(user);
+        res.status(200).json({ token, message: "Login successful" });
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+};
+
 module.exports = {
     createUserController,
+    loginUserController,
 };
