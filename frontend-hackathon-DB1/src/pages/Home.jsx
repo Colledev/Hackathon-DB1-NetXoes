@@ -1,7 +1,11 @@
+import BrandsList from "../components/BrandsList";
+import ProductList from "../components/ProductList";
+
 const Home = () => {
     return (
         <div>
-            <h1>Home</h1>
+            <BrandsList />
+            <ProductList />
         </div>
     );
 };
