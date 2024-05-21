@@ -24,7 +24,7 @@ const BrandsList = () => {
 
     return (
         <div className="flex justify-center">
-            <div className="px-4 sm:px-4 md:px-4 lg:px-8 xl:px-32 mx-auto">
+            <div className="px-4 sm:px-4 md:px-8 lg:px-16 xl:px-40 mx-auto">
                 <div className="py-12 overflow-x-auto">
                     <div className="flex space-x-4">
                         {brands.map((brand) => (
