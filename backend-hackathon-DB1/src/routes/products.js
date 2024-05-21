@@ -10,10 +10,18 @@ router.get("/", async (req, res) => {
         const products = await prisma.product.findMany({
             include: {
                 installment: true,
+<<<<<<< Updated upstream
             },
         });
 
         const productsWithInstallment = products.map((product) => {
+=======
+                brand: true,
+            },
+        });
+
+        const productsWithInstallmentAndBrand = products.map((product) => {
+>>>>>>> Stashed changes
             if (product.installment) {
                 const installmentAmount = calculateInstallment(
                     product.price,
@@ -35,7 +43,11 @@ router.get("/", async (req, res) => {
             }
         });
 
+<<<<<<< Updated upstream
         res.json(productsWithInstallment);
+=======
+        res.json(productsWithInstallmentAndBrand);
+>>>>>>> Stashed changes
     } catch (error) {
         console.error("An error occurred while fetching products:", error);
         res.status(500).json({
