@@ -23,22 +23,20 @@ const BrandsList = () => {
     }, []);
 
     return (
-        <div className="flex justify-center overflow-x-auto p-4 md:p-8 lg:p-12 xl:p-16">
-            <div className="flex">
-                {brands.map((brand, index) => (
-                    <div
-                        key={brand.id}
-                        className={`flex-none ${
-                            index !== 0 ? "ml-4" : ""
-                        } mr-4`}
-                    >
-                        <img
-                            src={brand.imageUrl}
-                            alt={brand.name}
-                            className="object-cover h-20 md:h-24 lg:h-28 xl:h-32"
-                        />
+        <div className="flex justify-center">
+            <div className="px-4 sm:px-4 md:px-4 lg:px-8 xl:px-32 mx-auto">
+                <div className="py-12 overflow-x-auto">
+                    <div className="flex space-x-4">
+                        {brands.map((brand) => (
+                            <img
+                                key={brand.id}
+                                src={brand.imageUrl}
+                                alt={brand.name}
+                                className="object-cover h-20 sm:h-20 md:h-24 lg:h-28 xl:h-28"
+                            />
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
         </div>
     );

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid";
 import axios from "axios";
-import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -34,45 +29,48 @@ const ProductList = () => {
     }, []);
 
     return (
-        <div>
-            <h2>Produtos Aleatórios</h2>
-            <Grid container spacing={2}>
+        <div className="px-4 sm:px-4 md:px-4 lg:px-8 xl:px-32">
+            <div>
+                <h1 className="text-2xl lg:text-3xl xl:text-4xl mb-4">
+                    Products
+                </h1>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {products.map((product) => (
-                    <Grid item xs={6} sm={3} key={product.id}>
-                        <Card>
-                            <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={product.imageUrl}
+                    <CardActionArea>
+                        <div key={product.id} className="h-full">
+                            <div className="bg-white shadow-md p-4 h-full flex flex-col justify-between">
+                                <img
+                                    src={product.imageUrl}
                                     alt={product.name}
+                                    className="w-full h-auto object-fit"
                                 />
-                                <CardContent>
-                                    <Typography
-                                        gutterBottom
-                                        variant="h6"
-                                        component="div"
-                                    >
+                                <div>
+                                    <h2 className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm text-gray-500 mb-[-5px] mt-0.5">
+                                        {product.brand.name}
+                                    </h2>
+                                    <h3 className="text-base sm:text-xl md:text-xl lg:text-xl xl:text-xl">
                                         {product.name}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="text.secondary"
-                                    >
-                                        Preço: R$ {product.price}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="text.secondary"
-                                    >
-                                        Parcela: R${" "}
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    </Grid>
+                                    </h3>
+                                </div>
+                                <div>
+                                    <p className="text-sm sm:text-base md:text-base lg:text-base xl:text-base font-bold mt-2">
+                                        R$ {product.price}
+                                    </p>
+                                    <p className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm">
+                                        or {product.installment.number} {"x"} of
+                                        R${" "}
+                                        {
+                                            product.installment
+                                                .formattedInstallment
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </CardActionArea>
                 ))}
-            </Grid>
+            </div>
         </div>
     );
 };
