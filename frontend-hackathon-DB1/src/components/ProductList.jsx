@@ -6,6 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import CardActions from "@mui/material/CardActions";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -62,7 +63,7 @@ const ProductList = () => {
                     <ArrowForwardIcon className="ml-0" />
                 </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {products.map((product) => (
                     <div key={product.id} className="relative h-full">
                         <div className="bg-white shadow-md p-4 h-full flex flex-col justify-between">
@@ -103,12 +104,18 @@ const ProductList = () => {
                                     {product.installment.formattedInstallment}
                                 </p>
                             </div>
-                            <div>
+                            <div className="flex justify-between items-center space-x-4 mt-4">
                                 <button
-                                    className="w-full hover:bg-gray-500 bg-black text-white font-bold py-2 px-4 rounded mt-4"
+                                    className="w-1/3 hover:bg-gray-500 bg-black text-white font-bold rounded p-2 px-4 flex items-center justify-center"
                                     onClick={() => handleDetails(product.id)}
                                 >
                                     Details
+                                </button>
+                                <button
+                                    className="w-12 h-12 hover:bg-gray-500 bg-black text-white font-bold rounded-full flex items-center justify-center"
+                                    onClick={() => handleCart(product.id)}
+                                >
+                                    <ShoppingCartIcon />
                                 </button>
                             </div>
                         </div>
