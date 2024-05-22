@@ -30,7 +30,7 @@ const seed = async () => {
 
     const capCategory = await prisma.category.create({
         data: {
-            name: "Sneakers",
+            name: "Cap",
             imageUrl:
                 "https://static.netshoes.com.br/produtos/tenis-kappa-mantua/06/D24-6017-006/D24-6017-006_zoom1.jpg?ts=1702896868&ims=326x, https://static.netshoes.com.br/produtos/tenis-kappa-mantua/06/D24-6017-006/D24-6017-006_zoom1.jpg?ts=1702896868&ims=652x",
         },
@@ -276,7 +276,7 @@ const seed = async () => {
                 },
             },
             imageUrl:
-                "https://static.netshoes.com.br/produtos/chuteira-nike-beco-2-futsal/16/JD8-4975-016/JD8-4975-016_zoom1.jpg?ts=1696004535&ims=326x, https://static.netshoes.com.br/produtos/chuteira-nike-beco-2-futsal/16/JD8-4975-016/JD8-4975-016_zoom1.jpg?ts=1696004535&ims=652x",
+                "https://static.netshoes.com.br/produtos/chuteira-society-mizuno-morelia-classic-unissex/80/2FU-8373-080/2FU-8373-080_zoom1.jpg?ts=1697040027&ims=326x, https://static.netshoes.com.br/produtos/chuteira-society-mizuno-morelia-classic-unissex/80/2FU-8373-080/2FU-8373-080_zoom1.jpg?ts=1697040027&ims=652x",
             description:
                 "Score the winning goal and become the star of the game with the Mizuno Morelia Classic Unisex Society Cleats! Crafted from high-quality materials, these Mizuno society cleats feature an upper with a comfortable and precise fit. The sole offers durability and assists in quick changes of direction, as well as stability during the game. Make your mark on the field and buy these Mizuno unisex cleats now!",
             price: 449.99,
