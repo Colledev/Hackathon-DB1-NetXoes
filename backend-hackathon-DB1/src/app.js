@@ -5,6 +5,7 @@ const cors = require("cors");
 const usersRoute = require("./routes/users");
 const brandsRoute = require("./routes/brands");
 const productRoute = require("./routes/products");
+const favoriteRoute = require("./routes/favorite");
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 app.use("/users", usersRoute);
 app.use("/brands", brandsRoute);
 app.use("/products", productRoute);
+app.use("/favorites", favoriteRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

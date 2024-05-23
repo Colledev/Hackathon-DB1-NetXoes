@@ -14,6 +14,7 @@ model User {
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  favorites Favorite[]
 }
 
 model Category {
@@ -44,6 +45,7 @@ model Product {
   brandId   String
   installment     Installment  @relation(fields: [installmentId], references: [id])
   installmentId   String
+  favorites Favorite[]
 }
 
 model Installment {
@@ -51,5 +53,15 @@ model Installment {
   number  Int
   interestRate     Float
   products  Product[]
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+
+  @@unique([userId, productId])
 }
 
