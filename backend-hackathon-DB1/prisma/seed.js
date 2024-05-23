@@ -105,22 +105,22 @@ const seed = async () => {
         },
     });
 
-    const kappasanwofnawofna = await prisma.product.create({
+    const kappaVerona = await prisma.product.create({
         data: {
-            name: "Kappa Phoenix",
+            name: "Kappa Verona",
             brand: {
                 connect: {
                     id: KappaBrand.id,
                 },
             },
             imageUrl:
-                "https://static.netshoes.com.br/produtos/chuteira-futsal-kappa-phoenix-unissex/08/D24-5692-108/D24-5692-108_zoom1.jpg?ts=1697558034&ims=326x, https://static.netshoes.com.br/produtos/chuteira-futsal-kappa-phoenix-unissex/08/D24-5692-108/D24-5692-108_zoom1.jpg?ts=1697558034&ims=652x",
+                "https://static.netshoes.com.br/produtos/chuteira-campo-kappa-verona-unissex/30/D24-5697-130/D24-5697-130_zoom1.jpg?ts=1697557925&ims=326x, https://static.netshoes.com.br/produtos/chuteira-campo-kappa-verona-unissex/30/D24-5697-130/D24-5697-130_zoom1.jpg?ts=1697557925&ims=652x",
             description:
-                "Take on the defenders and score the winning goal with the Kappa Phoenix Unisex Futsal Cleats! Perfect for football days with friends, these unisex futsal cleats feature a synthetic upper, rubber sole, lace-up closure, and a modern and bold design that exudes attitude on the pitch. Score that great goal and buy these Kappa futsal cleats now!",
-            price: 139.99,
+                "The Unisex Kappa Verona Field Soccer Cleat is your ally on game days! Perfect for showing off style during pickup games with friends, this Kappa Field Soccer Cleat is made of high-quality materials that offer comfort and safety during matches. The soft upper ensures precise passes and shots. Dominate the field with confidence and get this Kappa cleat now!",
+            price: 189.9,
             installment: {
                 create: {
-                    number: 7,
+                    number: 2,
                     interestRate: 1.99,
                 },
             },
