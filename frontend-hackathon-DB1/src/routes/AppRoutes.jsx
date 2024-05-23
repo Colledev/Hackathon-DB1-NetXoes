@@ -2,6 +2,7 @@ import Layout from "../layout/layout";
 import Home from "../pages/Home";
 import { Route, Routes } from "react-router-dom";
 import ProductPage from "../pages/ProductPage";
+import AllProductPage from "../pages/AllProductPage";
 
 const AppRoutes = () => {
     return (
@@ -14,6 +15,16 @@ const AppRoutes = () => {
                     </Layout>
                 }
             />
+
+            <Route
+                path="/products"
+                element={
+                    <Layout showHero={false}>
+                        <AllProductPage />
+                    </Layout>
+                }
+            ></Route>
+
             <Route
                 path="/products/:id"
                 element={

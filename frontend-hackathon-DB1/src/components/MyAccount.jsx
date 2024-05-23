@@ -1,5 +1,5 @@
 import React from "react";
-import { Popover, Box, Typography, Button } from "@mui/material";
+import { Popover, Box } from "@mui/material";
 import LocalStorageHelper from "../helpers/localstorage-helper";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";

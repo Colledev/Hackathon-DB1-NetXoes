@@ -35,7 +35,7 @@ const Header = () => {
     };
 
     return (
-        <div className="py-5 border-b border-black px-4">
+        <div className="py-5 border-b border-black px-4 fixed top-0 w-full bg-white shadow-md z-10">
             <div className="container mx-auto flex justify-between items-center">
                 <div>
                     <button
