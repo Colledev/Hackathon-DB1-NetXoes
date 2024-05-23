@@ -28,8 +28,8 @@ const CssTextField = styled(TextField)({
 const Login = ({ loginPopover, handlePopoverClose }) => {
     const [isLoginForm, setIsLoginForm] = useState(true);
     const [formValues, setFormValues] = useState({
-        email: "teste4@hotmail.com",
-        password: "teste123",
+        email: "",
+        password: "",
     });
 
     const handleFormChange = (event) => {

@@ -33,7 +33,7 @@ const ProductPage = () => {
 
     return (
         //sm: md: lg: xl:
-        <div className="mx-8 sm:mx-8 md:mx-16 lg:mx-20 xl:mx-40 mt-6 mb-16">
+        <div className="mx-8 sm:mx-8 md:mx-16 lg:mx-20 xl:mx-40 mb-16 mt-24">
             <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row">
                 {/* Detail Product and image sm and md */}
                 <div className="md:flex-1 lg:ml-8 xl:ml-16 xl:overflow-y-auto lg:overflow-y-auto mt-8">

@@ -8,40 +8,12 @@ import CardActions from "@mui/material/CardActions";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const ProductList = () => {
-    const [products, setProducts] = useState([]);
+const ProductList = ({ products }) => {
     const [favorites, setFavorites] = useState({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_BACKEND_URL}/products`
-                );
-                const allProducts = response.data;
-
-                const randomProducts = allProducts
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, 8);
-                setProducts(randomProducts);
-            } catch (error) {
-                console.error(
-                    "An error occurred while fetching products:",
-                    error
-                );
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
     const handleDetails = (productId) => {
         navigate(`/products/${productId}`);
-    };
-
-    const handleViewAll = (productId) => {
-        navigate(`/products`);
     };
 
     const handleFavorite = (productId) => {
@@ -57,7 +29,7 @@ const ProductList = () => {
                 <h1 className="text-2xl lg:text-3xl xl:text-4xl">Products</h1>
                 <button
                     className="text-gray-500 underline hover:text-black mb-[-5px] text-xl lg:text-xl xl:text-xl mr-2"
-                    onClick={handleViewAll}
+                    onClick={() => navigate(`/products`)}
                 >
                     View all
                     <ArrowForwardIcon className="ml-0" />
