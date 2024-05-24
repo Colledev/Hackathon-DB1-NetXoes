@@ -62,6 +62,7 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
             LocalStorageHelper.setToken(token);
 
             handlePopoverClose();
+            window.location.reload();
         } catch (error) {
             console.error("Error logging in:", error);
         }

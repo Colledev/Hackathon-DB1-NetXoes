@@ -3,6 +3,8 @@ import axios from "axios";
 import ProductList from "../components/ProductList";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CardActions from "@mui/material/CardActions";
 
 const AllProductPage = () => {
     const [products, setProducts] = useState([]);
@@ -36,6 +38,14 @@ const AllProductPage = () => {
 
     return (
         <div className="mt-24">
+            <CardActions
+                disableSpacing
+                className="flex justify-start items-center ml-12"
+                onClick={() => window.history.back()}
+            >
+                <ArrowBackIcon style={{ fontSize: "40px" }} />
+            </CardActions>
+
             <ProductList products={products} />
             <div className="mb-16">
                 <Stack spacing={2} alignItems="center" className="pagination">

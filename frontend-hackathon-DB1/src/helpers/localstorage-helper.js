@@ -25,8 +25,22 @@ const LocalStorageHelper = {
 
             return expirationDate > currentDate;
         } catch (error) {
-            console.error("Erro ao verificar autenticação:", error.message);
+            console.error("Error verify authentication:", error.message);
             return false;
+        }
+    },
+    getUserId() {
+        try {
+            const token = LocalStorageHelper.getToken();
+
+            if (!token) return null;
+
+            const payload = jwtDecode(token);
+
+            return payload.userId;
+        } catch (error) {
+            console.error("Error to get user ID:", error.message);
+            return null;
         }
     },
 };
