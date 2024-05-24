@@ -5,8 +5,8 @@ const { authenticateMiddleware } = require("../middlewares/authentication");
 
 router.get("/", authenticateMiddleware, favoriteController.listFavorites);
 
-router.post("/", favoriteController.createFavorite);
+router.post("/", authenticateMiddleware, favoriteController.createFavorite);
 
-router.delete("/:id", favoriteController.deleteFavorite);
+router.delete("/", authenticateMiddleware, favoriteController.deleteFavorite);
 
 module.exports = router;
