@@ -3,10 +3,13 @@ import { Popover, Box } from "@mui/material";
 import LocalStorageHelper from "../helpers/localstorage-helper";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 const MyAccount = ({ anchorEl, handlePopoverClose }) => {
+    const navigate = useNavigate();
     const handleLogout = () => {
         LocalStorageHelper.removeToken();
+        navigate("/");
         window.location.reload();
     };
 

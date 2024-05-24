@@ -18,6 +18,16 @@ const Header = () => {
         navigate("/");
     };
 
+    const handleFavorite = () => {
+        if (isAuthenticated) {
+            navigate("/favorites");
+        } else {
+            alert(
+                "Você precisa estar autenticado para acessar seus favoritos."
+            );
+        }
+    };
+
     const handlePopoverOpen = (event) => {
         setLoginPopover(event.currentTarget);
     };
@@ -47,7 +57,10 @@ const Header = () => {
                 </div>
                 <div className="flex gap-4">
                     <SearchIcon />
-                    <FavoriteBorderIcon />
+                    <FavoriteBorderIcon
+                        onClick={handleFavorite}
+                        style={{ cursor: "pointer" }}
+                    />
                     {isAuthenticated ? (
                         <PersonIcon
                             onClick={handleMyAccountPopoverOpen}

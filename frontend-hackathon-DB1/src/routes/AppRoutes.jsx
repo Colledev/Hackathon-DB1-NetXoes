@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import { Route, Routes } from "react-router-dom";
 import ProductPage from "../pages/ProductPage";
 import AllProductPage from "../pages/AllProductPage";
+import FavoritePage from "../pages/FavoritePage";
 
 const AppRoutes = () => {
     return (
@@ -30,6 +31,15 @@ const AppRoutes = () => {
                 element={
                     <Layout showHero={false}>
                         <ProductPage />
+                    </Layout>
+                }
+            ></Route>
+
+            <Route
+                path="/favorites"
+                element={
+                    <Layout showHero={false}>
+                        <FavoritePage />
                     </Layout>
                 }
             ></Route>
