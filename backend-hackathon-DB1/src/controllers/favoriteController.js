@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { calculateInstallment } = require("../utils/calculateInstallment");
 
 const prisma = new PrismaClient();
 
@@ -11,11 +12,41 @@ const listFavorites = async (req, res) => {
                 userId: loggedUserId,
             },
             include: {
-                product: true,
+                product: {
+                    include: {
+                        brand: true,
+                        installment: true,
+                    },
+                },
             },
         });
 
-        res.status(200).json(favorites);
+        const favoritesWithFormattedInstallments = favorites.map((favorite) => {
+            if (favorite.product.installment) {
+                const installmentAmount = calculateInstallment(
+                    favorite.product.price,
+                    favorite.product.installment.interestRate,
+                    favorite.product.installment.number
+                );
+
+                const formattedInstallment = installmentAmount.toFixed(2);
+
+                return {
+                    ...favorite,
+                    product: {
+                        ...favorite.product,
+                        installment: {
+                            ...favorite.product.installment,
+                            formattedInstallment: formattedInstallment,
+                        },
+                    },
+                };
+            } else {
+                return favorite;
+            }
+        });
+
+        res.status(200).json(favoritesWithFormattedInstallments);
     } catch (error) {
         console.error("Error fetching favorites:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -24,26 +55,66 @@ const listFavorites = async (req, res) => {
 
 const createFavorite = async (req, res) => {
     try {
-        const newFavorite = await prisma.favorite.create({
-            data: req.body,
+        const loggedUserId = req.loggedUser.id;
+
+        const existingFavorite = await prisma.favorite.findUnique({
+            where: {
+                userId_productId: {
+                    userId: loggedUserId,
+                    productId: req.body.productId,
+                },
+            },
         });
+
+        if (existingFavorite) {
+            return res.status(400).json({ error: "Product already favorited" });
+        }
+
+        const newFavorite = await prisma.favorite.create({
+            data: {
+                userId: loggedUserId,
+                productId: req.body.productId,
+            },
+        });
+
         res.status(201).json({ message: "Favorite created", newFavorite });
     } catch (error) {
-        res.status(400).send({ message: error.message });
+        console.error("Error creating favorite:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
 const deleteFavorite = async (req, res) => {
-    const { id } = req.params;
+    const loggedUserId = req.loggedUser.id;
+
     try {
-        await prisma.favorite.delete({
+        const favorite = await prisma.favorite.findUnique({
             where: {
-                id: id,
+                userId_productId: {
+                    userId: loggedUserId,
+                    productId: req.body.productId,
+                },
             },
         });
-        res.status(204).json({ message: "Favorite deleted", id });
+
+        if (!favorite) {
+            return res.status(404).json({ error: "Favorite not found" });
+        }
+
+        if (favorite.userId !== loggedUserId) {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        await prisma.favorite.delete({
+            where: {
+                id: favorite.id,
+            },
+        });
+
+        res.status(204).json({ message: "Favorite deleted" });
     } catch (error) {
-        res.status(400).send({ message: error.message });
+        console.error("Error deleting favorite:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
