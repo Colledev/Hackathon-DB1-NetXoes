@@ -4,10 +4,21 @@ const prisma = new PrismaClient();
 
 const listFavorites = async (req, res) => {
     try {
-        const favorites = await prisma.favorite.findMany();
-        res.json(favorites);
+        const loggedUserId = req.loggedUser.id;
+
+        const favorites = await prisma.favorite.findMany({
+            where: {
+                userId: loggedUserId,
+            },
+            include: {
+                product: true,
+            },
+        });
+
+        res.status(200).json(favorites);
     } catch (error) {
-        res.status(400).send({ message: error.message });
+        console.error("Error fetching favorites:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
@@ -30,7 +41,7 @@ const deleteFavorite = async (req, res) => {
                 id: id,
             },
         });
-        res.json({ message: `Favorite with id ${id} deleted` });
+        res.status(204).json({ message: "Favorite deleted", id });
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
