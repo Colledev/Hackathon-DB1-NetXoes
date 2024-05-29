@@ -59,7 +59,7 @@ const ProductList = ({ products }) => {
                             </div>
                             <div className="flex justify-between items-center space-x-4 mt-4">
                                 <button
-                                    className="w-1/3 hover:bg-gray-500 bg-black text-white font-bold rounded p-2 px-4 flex items-center justify-center"
+                                    className="w-2/3 sm:w-1/3 hover:bg-gray-500 bg-black text-white font-bold rounded p-2 px-4 flex items-center justify-center"
                                     onClick={() => handleDetails(product.id)}
                                 >
                                     Details

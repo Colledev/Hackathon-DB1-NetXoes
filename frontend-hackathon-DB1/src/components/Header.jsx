@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 import MyAccount from "./MyAccount";
 import LocalStorageHelper from "../helpers/localstorage-helper";
+import IconButton from "@mui/material/IconButton";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Header = () => {
             navigate("/favorites");
         } else {
             alert(
-                "Você precisa estar autenticado para acessar seus favoritos."
+                "You must be logged in to view your favorites. Please log in."
             );
         }
     };
@@ -56,24 +57,59 @@ const Header = () => {
                     </button>
                 </div>
                 <div className="flex gap-4">
-                    <SearchIcon />
-                    <FavoriteBorderIcon
+                    <div className="flex items-center border border-gray-300 rounded p-0.5 max-w-md">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            aria-label="search"
+                            className="w-full px-2 py-1 focus:outline-none"
+                        />
+                        <IconButton
+                            size="medium"
+                            aria-label="search"
+                            color="inherit"
+                        >
+                            <SearchIcon />
+                        </IconButton>
+                    </div>
+                    <IconButton
+                        size="medium"
+                        aria-label="search"
+                        color="inherit"
                         onClick={handleFavorite}
-                        style={{ cursor: "pointer" }}
-                    />
+                    >
+                        <FavoriteBorderIcon style={{ cursor: "pointer" }} />
+                    </IconButton>
+
                     {isAuthenticated ? (
-                        <PersonIcon
+                        <IconButton
+                            size="medium"
+                            aria-label="search"
+                            color="inherit"
                             onClick={handleMyAccountPopoverOpen}
-                            style={{ cursor: "pointer" }}
-                        />
+                        >
+                            <PersonIcon style={{ cursor: "pointer" }} />
+                        </IconButton>
                     ) : (
-                        <PersonIcon
-                            aria-describedby="login-popover"
+                        <IconButton
+                            size="medium"
+                            aria-label="search"
+                            color="inherit"
                             onClick={handlePopoverOpen}
-                            style={{ cursor: "pointer" }}
-                        />
+                        >
+                            <PersonIcon
+                                aria-describedby="login-popover"
+                                style={{ cursor: "pointer" }}
+                            />
+                        </IconButton>
                     )}
-                    <ShoppingCartIcon />
+                    <IconButton
+                        size="medium"
+                        aria-label="search"
+                        color="inherit"
+                    >
+                        <ShoppingCartIcon />
+                    </IconButton>
                 </div>
             </div>
             {isAuthenticated ? (
