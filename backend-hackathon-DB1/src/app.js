@@ -7,6 +7,7 @@ const brandsRoute = require("./routes/brands");
 const categoryRoute = require("./routes/categories");
 const productRoute = require("./routes/products");
 const favoriteRoute = require("./routes/favorite");
+const cartRoute = require("./routes/cart");
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/brands", brandsRoute);
 app.use("/categories", categoryRoute);
 app.use("/products", productRoute);
 app.use("/favorites", favoriteRoute);
+app.use("/cart", cartRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

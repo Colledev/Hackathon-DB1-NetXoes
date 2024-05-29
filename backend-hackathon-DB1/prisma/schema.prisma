@@ -8,13 +8,15 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  name     String
-  email    String   @unique
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  favorites Favorite[]
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  favorites     Favorite[]
+  itemCarts     ItemCart[]
+  carts Cart[]
 }
 
 model Category {
@@ -34,18 +36,19 @@ model Brand {
 }
 
 model Product {
-  id        String   @id @default(cuid())
-  name      String
-  imageUrl  String
-  price     Float
-  description String
-  category  Category @relation(fields: [categoryId], references: [id])
-  categoryId String
-  brand     Brand    @relation(fields: [brandId], references: [id])
-  brandId   String
-  installment     Installment  @relation(fields: [installmentId], references: [id])
-  installmentId   String
-  favorites Favorite[]
+  id            String      @id @default(cuid())
+  name          String
+  imageUrl      String
+  price         Float
+  description   String
+  category      Category    @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  brand         Brand       @relation(fields: [brandId], references: [id])
+  brandId       String
+  installment   Installment @relation(fields: [installmentId], references: [id])
+  installmentId String
+  favorites     Favorite[]
+  itemCarts     ItemCart[]
 }
 
 model Installment {
@@ -65,3 +68,21 @@ model Favorite {
   @@unique([userId, productId])
 }
 
+model ItemCart {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  carts Cart[]
+
+  @@unique([userId, productId])
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  items     ItemCart[]
+}
