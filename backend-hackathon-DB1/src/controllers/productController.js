@@ -5,11 +5,81 @@ const prisma = new PrismaClient();
 
 const listProducts = async (req, res) => {
     const { page, limit, skip } = req.pagination || {};
+    const { brand, category, name, sort, order } = req.query;
 
     try {
+        let filter = {};
+
+        let sortQuery = {};
+
+        if (sort && order) {
+            if (sort === "name") {
+                sortQuery = { name: order };
+            } else if (sort === "price") {
+                sortQuery = { price: order };
+            }
+        }
+
+        if (brand) {
+            const brands = Array.isArray(brand) ? brand : [brand];
+            const brandIds = await Promise.all(
+                brands.map(async (brandName) => {
+                    const brandInfo = await prisma.brand.findFirst({
+                        where: {
+                            name: {
+                                equals: brandName,
+                                mode: "insensitive",
+                            },
+                        },
+                        select: {
+                            id: true,
+                        },
+                    });
+                    return brandInfo ? brandInfo.id : null;
+                })
+            );
+
+            filter.brandId = {
+                in: brandIds.filter((id) => id !== null),
+            };
+        }
+
+        if (category) {
+            const categories = Array.isArray(category) ? category : [category];
+            const categoryIds = await Promise.all(
+                categories.map(async (categoryName) => {
+                    const categoryInfo = await prisma.category.findFirst({
+                        where: {
+                            name: {
+                                equals: categoryName,
+                                mode: "insensitive",
+                            },
+                        },
+                        select: {
+                            id: true,
+                        },
+                    });
+                    return categoryInfo ? categoryInfo.id : null;
+                })
+            );
+
+            filter.categoryId = {
+                in: categoryIds.filter((id) => id !== null),
+            };
+        }
+
+        if (name) {
+            filter.name = {
+                contains: name,
+                mode: "insensitive",
+            };
+        }
+
         let products;
+
         if (page && limit) {
             products = await prisma.product.findMany({
+                where: filter,
                 skip: skip,
                 take: limit,
                 include: {
@@ -17,18 +87,23 @@ const listProducts = async (req, res) => {
                     brand: true,
                     category: true,
                 },
+                orderBy: sortQuery,
             });
         } else {
             products = await prisma.product.findMany({
+                where: filter,
                 include: {
                     installment: true,
                     brand: true,
                     category: true,
                 },
+                orderBy: sortQuery,
             });
         }
 
-        const totalProducts = await prisma.product.count();
+        const totalProducts = await prisma.product.count({
+            where: filter,
+        });
 
         const productsWithInstallmentAndBrand = products.map((product) => {
             if (product.installment) {
@@ -59,6 +134,7 @@ const listProducts = async (req, res) => {
                       totalProducts,
                       totalPages: Math.ceil(totalProducts / limit),
                       currentPage: page,
+                      filter: { brand, category, name, sort, order },
                   }
                 : productsWithInstallmentAndBrand
         );
@@ -116,8 +192,6 @@ const getProductById = async (req, res) => {
         });
     }
 };
-
-const listProductsperFilter = async (req, res) => {};
 
 module.exports = {
     listProducts,
