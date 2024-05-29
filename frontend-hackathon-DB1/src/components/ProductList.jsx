@@ -3,9 +3,41 @@ import CardActions from "@mui/material/CardActions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Favorite from "./Favorite";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import LocalStorageHelper from "../helpers/localstorage-helper";
+import CartAlert from "../utils/CartAlert";
+import UnauthorizedAlert from "../utils/UnauthorizedAlert";
 
 const ProductList = ({ products }) => {
     const [favorites, setFavorites] = useState({});
+    const [showAlert, setShowAlert] = useState(false);
+    const [showUnauthorizedAlert, setShowUnauthorizedAlert] = useState(false);
+
+    const handleAddToCart = async (productId) => {
+        try {
+            if (!LocalStorageHelper.isAuthenticated()) {
+                setShowUnauthorizedAlert(true);
+                return;
+            }
+
+            await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/cart/item`,
+                {
+                    productId,
+                    quantity: 1,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${LocalStorageHelper.getToken()}`,
+                    },
+                }
+            );
+            setShowAlert(true);
+        } catch (error) {
+            console.error("An error occurred while adding to cart:", error);
+        }
+    };
+
     const navigate = useNavigate();
 
     const updateFavoriteState = (productId, isFavorited) => {
@@ -17,6 +49,14 @@ const ProductList = ({ products }) => {
 
     const handleDetails = (productId) => {
         navigate(`/products/${productId}`);
+    };
+
+    const handleCloseAlert = () => {
+        setShowAlert(false);
+    };
+
+    const handleCloseUnauthorizedAlert = () => {
+        setShowUnauthorizedAlert(false);
     };
 
     return (
@@ -66,7 +106,7 @@ const ProductList = ({ products }) => {
                                 </button>
                                 <button
                                     className="w-12 h-12 hover:bg-gray-500 bg-black text-white font-bold rounded-full flex items-center justify-center"
-                                    onClick={() => handleCart(product.id)}
+                                    onClick={() => handleAddToCart(product.id)}
                                 >
                                     <ShoppingCartIcon />
                                 </button>
@@ -75,6 +115,15 @@ const ProductList = ({ products }) => {
                     </div>
                 ))}
             </div>
+            <CartAlert
+                showAlert={showAlert}
+                handleCloseAlert={handleCloseAlert}
+            />
+            <UnauthorizedAlert
+                showAlert={showUnauthorizedAlert}
+                setShowAlert={setShowUnauthorizedAlert}
+                handleCloseAlert={handleCloseUnauthorizedAlert}
+            />
         </div>
     );
 };

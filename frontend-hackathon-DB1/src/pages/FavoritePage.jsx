@@ -6,9 +6,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
+import CartAlert from "../utils/CartAlert";
+import FavoriteAlert from "../utils/FavoriteAlert";
 
 const FavoritePage = () => {
     const [favorites, setFavorites] = useState([]);
+    const [showCartAlert, setShowCartAlert] = useState(false);
+    const [showFavoriteAlert, setShowFavoriteAlert] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,9 +60,43 @@ const FavoritePage = () => {
                     (favorite) => favorite.product.id !== productId
                 )
             );
+
+            setShowFavoriteAlert(true);
         } catch (error) {
             console.error("Error deleting favorite:", error);
         }
+    };
+
+    const handleAddToCart = async (productId) => {
+        try {
+            if (!LocalStorageHelper.isAuthenticated()) {
+                return;
+            }
+
+            await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/cart/item`,
+                {
+                    productId,
+                    quantity: 1,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${LocalStorageHelper.getToken()}`,
+                    },
+                }
+            );
+            setShowCartAlert(true);
+        } catch (error) {
+            console.error("An error occurred while adding to cart:", error);
+        }
+    };
+
+    const handleCloseCartAlert = () => {
+        setShowCartAlert(false);
+    };
+
+    const handleCloseFavoriteAlert = () => {
+        setShowFavoriteAlert(false);
     };
 
     const handleDetails = (productId) => {
@@ -120,17 +158,25 @@ const FavoritePage = () => {
                                 <div className="absolute bottom-4 right-4 mb-2 mr-2">
                                     <div className="flex flex-col items-center">
                                         <div className="flex gap-2 mb-2">
-                                            <button className="w-8 h-8 hover:bg-gray-500 bg-black text-white font-bold rounded-full sm:w-12 sm:h-12 lg:w-14 lg:h-14">
+                                            <button
+                                                className="w-8 h-8 hover:bg-gray-500 bg-black text-white font-bold rounded-full sm:w-12 sm:h-12 lg:w-14 lg:h-14"
+                                                onClick={() =>
+                                                    handleAddToCart(
+                                                        favorite.product.id
+                                                    )
+                                                }
+                                            >
                                                 <ShoppingCartIcon />
                                             </button>
-                                            <button className="w-8 h-8 hover:bg-gray-500 bg-red-800 text-white font-bold rounded-full sm:w-12 sm:h-12 lg:w-14 lg:h-14">
-                                                <DeleteIcon
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            favorite.product.id
-                                                        )
-                                                    }
-                                                />
+                                            <button
+                                                className="w-8 h-8 hover:bg-gray-500 bg-red-800 text-white font-bold rounded-full sm:w-12 sm:h-12 lg:w-14 lg:h-14"
+                                                onClick={() =>
+                                                    handleDelete(
+                                                        favorite.product.id
+                                                    )
+                                                }
+                                            >
+                                                <DeleteIcon />
                                             </button>
                                         </div>
                                         <div>
@@ -152,6 +198,15 @@ const FavoritePage = () => {
                     ))
                 )}
             </div>
+            <CartAlert
+                showAlert={showCartAlert}
+                handleCloseAlert={handleCloseCartAlert}
+            />
+            <FavoriteAlert
+                showAlert={showFavoriteAlert}
+                handleCloseAlert={handleCloseFavoriteAlert}
+                isAdded={true}
+            />
         </>
     );
 };
