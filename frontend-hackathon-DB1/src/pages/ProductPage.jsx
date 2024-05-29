@@ -4,13 +4,16 @@ import SizeSelector from "../components/Sizes";
 import axios from "axios";
 import Colors from "../components/Colors";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CardActions from "@mui/material/CardActions";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
+import LocalStorageHelper from "../helpers/localstorage-helper";
+import CartAlert from "../utils/CartAlert";
+import UnauthorizedAlert from "../utils/UnauthorizedAlert";
 
 const ProductPage = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
+    const [showUnauthorizedAlert, setShowUnauthorizedAlert] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -30,6 +33,39 @@ const ProductPage = () => {
     if (!product) {
         return <div>Loading...</div>;
     }
+
+    const handleAddToCart = async (productId) => {
+        try {
+            if (!LocalStorageHelper.isAuthenticated()) {
+                setShowUnauthorizedAlert(true);
+                return;
+            }
+
+            await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/cart/item`,
+                {
+                    productId,
+                    quantity: 1,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${LocalStorageHelper.getToken()}`,
+                    },
+                }
+            );
+            setShowAlert(true);
+        } catch (error) {
+            console.error("An error occurred while adding to cart:", error);
+        }
+    };
+
+    const handleCloseUnauthorizedAlert = () => {
+        setShowUnauthorizedAlert(false);
+    };
+
+    const handleCloseAlert = () => {
+        setShowAlert(false);
+    };
 
     const capCategoryId = "clwbm6967000392cmrenuwr1l";
 
@@ -85,7 +121,10 @@ const ProductPage = () => {
                                 {product.description}
                             </p>
                         </div>
-                        <button className="w-full hover:bg-gray-500 bg-black text-white font-bold py-2 px-4 rounded mt-16 mb-4">
+                        <button
+                            className="w-full hover:bg-gray-500 bg-black text-white font-bold py-2 px-4 rounded mt-16 mb-4"
+                            onClick={() => handleAddToCart(product.id)}
+                        >
                             Add to cart
                         </button>
                     </div>
@@ -128,7 +167,10 @@ const ProductPage = () => {
                                 {product.description}
                             </p>
                         </div>
-                        <button className="w-full hover:bg-gray-500 bg-black text-white font-bold py-2 px-4 rounded mt-16 mb-4">
+                        <button
+                            className="w-full hover:bg-gray-500 bg-black text-white font-bold py-2 px-4 rounded mt-16 mb-4"
+                            onClick={() => handleAddToCart(product.id)}
+                        >
                             Add to cart
                         </button>
                     </div>
@@ -143,6 +185,15 @@ const ProductPage = () => {
                     </div>
                 </div>
             </div>
+            <CartAlert
+                showAlert={showAlert}
+                handleCloseAlert={handleCloseAlert}
+            />
+            <UnauthorizedAlert
+                showAlert={showUnauthorizedAlert}
+                setShowAlert={setShowUnauthorizedAlert}
+                handleCloseAlert={handleCloseUnauthorizedAlert}
+            />
         </>
     );
 };
