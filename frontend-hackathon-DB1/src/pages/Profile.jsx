@@ -4,6 +4,13 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import LocalStorageHelper from "../helpers/localstorage-helper";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {
+    validateEmail,
+    validatePassword,
+    validateName,
+} from "../validators/user";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -33,6 +40,9 @@ const Profile = () => {
         password: "",
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [nameError, setNameError] = useState("");
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -97,82 +107,115 @@ const Profile = () => {
         handleUpdateProfile();
     };
 
+    const handleEmailBlur = () => {
+        setEmailError(validateEmail(formData.email));
+    };
+
+    const handlePasswordBlur = () => {
+        setPasswordError(validatePassword(formData.password));
+    };
+
+    const handleNameBlur = () => {
+        setNameError(validateName(formData.name));
+    };
+
     return (
-        <div className="mt-32 px-16 sm:px-32 md:px-52 lg:px-72 xl:px-96">
-            <div className="flex justify-center">
-                <h1 className="text-4xl">Edit Profile</h1>
+        <>
+            <div className="flex mt-24">
+                <IconButton
+                    style={{ marginLeft: "14px" }}
+                    size="large"
+                    aria-label="search"
+                    color="inherit"
+                    onClick={() => window.history.back()}
+                >
+                    <ArrowBackIcon style={{ fontSize: "40px" }} />
+                </IconButton>
             </div>
-            <form onSubmit={handleSubmit}>
-                <div className="mt-8">
-                    <h2>
-                        Change Name: <strong> {user.name}</strong>
-                    </h2>
+            <div className="mt-8 px-16 sm:px-32 md:px-52 lg:px-72 xl:px-96">
+                <div className="flex justify-center">
+                    <h1 className="text-4xl">Edit Profile</h1>
                 </div>
-                <div className="">
-                    <CssTextField
-                        fullWidth
-                        margin="normal"
-                        label="New Name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleFormChange}
-                    />
-                </div>
-                <div className="mt-8">
-                    <h2>
-                        Change Email:<strong> {user.email}</strong>
-                    </h2>
-                </div>
-                <div className="">
-                    <CssTextField
-                        fullWidth
-                        margin="normal"
-                        label="New Email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleFormChange}
-                    />
-                </div>
-                <div className="mt-8">
-                    <h2>
-                        Change Password:<strong> {user.password}</strong>
-                    </h2>
-                </div>
-                <div className="">
-                    <CssTextField
-                        fullWidth
-                        margin="normal"
-                        label="New Password"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleFormChange}
-                        onFocus={() => setShowPassword(true)}
-                        onBlur={() => setShowPassword(false)}
-                    />
-                </div>
-                <div className="flex justify-center mt-8 mb-16">
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "black",
-                            width: "200px",
-                            height: "50px",
-                            fontSize: "18px",
-                            padding: "20px",
-                            color: "white",
-                            "&:hover": {
-                                backgroundColor: "darkgray",
-                            },
-                        }}
-                    >
-                        Update Profile
-                    </Button>
-                </div>
-            </form>
-        </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="mt-6">
+                        <h2>
+                            Change Name: <strong> {user.name}</strong>
+                        </h2>
+                    </div>
+                    <div className="">
+                        <CssTextField
+                            fullWidth
+                            margin="normal"
+                            label="New Name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleFormChange}
+                            onBlur={handleNameBlur}
+                            error={Boolean(nameError)}
+                            helperText={nameError}
+                        />
+                    </div>
+                    <div className="mt-6">
+                        <h2>
+                            Change Email:<strong> {user.email}</strong>
+                        </h2>
+                    </div>
+                    <div className="">
+                        <CssTextField
+                            fullWidth
+                            margin="normal"
+                            label="New Email"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleFormChange}
+                            onBlur={handleEmailBlur}
+                            error={Boolean(emailError)}
+                            helperText={emailError}
+                        />
+                    </div>
+                    <div className="mt-6">
+                        <h2>
+                            Change Password:<strong> {user.password}</strong>
+                        </h2>
+                    </div>
+                    <div className="">
+                        <CssTextField
+                            fullWidth
+                            margin="normal"
+                            label="New Password"
+                            name="password"
+                            type="password"
+                            value={formData.password}
+                            onChange={handleFormChange}
+                            onBlur={handlePasswordBlur}
+                            onFocus={() => setShowPassword(true)}
+                            error={Boolean(passwordError)}
+                            helperText={passwordError}
+                        />
+                    </div>
+                    <div className="flex justify-center mt-8 mb-16">
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "black",
+                                width: "200px",
+                                height: "50px",
+                                fontSize: "18px",
+                                padding: "20px",
+                                color: "white",
+                                "&:hover": {
+                                    backgroundColor: "darkgray",
+                                },
+                            }}
+                        >
+                            Update Profile
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </>
     );
 };
 

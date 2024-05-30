@@ -3,6 +3,11 @@ import { Popover, Box, Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Login from "./Login";
 import axios from "axios";
+import {
+    validateEmail,
+    validatePassword,
+    validateName,
+} from "../validators/user";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -31,6 +36,9 @@ const Register = ({ registerPopover, handlePopoverClose }) => {
         email: "",
         password: "",
     });
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [nameError, setNameError] = useState("");
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -70,6 +78,18 @@ const Register = ({ registerPopover, handlePopoverClose }) => {
         setIsRegisterForm(!isRegisterForm);
     };
 
+    const handleEmailBlur = () => {
+        setEmailError(validateEmail(formValues.email));
+    };
+
+    const handlePasswordBlur = () => {
+        setPasswordError(validatePassword(formValues.password));
+    };
+
+    const handleNameBlur = () => {
+        setNameError(validateName(formValues.name));
+    };
+
     return (
         <>
             {isRegisterForm ? (
@@ -95,11 +115,14 @@ const Register = ({ registerPopover, handlePopoverClose }) => {
                                 required
                                 fullWidth
                                 onChange={handleFormChange}
+                                onBlur={handleNameBlur}
                                 id="name"
                                 label="Name"
                                 name="name"
                                 autoFocus
                                 value={formValues.name}
+                                error={Boolean(nameError)}
+                                helperText={nameError}
                             />
                         </div>
                         <div className="bg-gray-100 p-1 -mt-4">
@@ -108,11 +131,14 @@ const Register = ({ registerPopover, handlePopoverClose }) => {
                                 required
                                 fullWidth
                                 onChange={handleFormChange}
+                                onBlur={handleEmailBlur}
                                 name="email"
                                 label="Email"
                                 type="email"
                                 id="email"
                                 value={formValues.email}
+                                error={Boolean(emailError)}
+                                helperText={emailError}
                             />
                         </div>
                         <div className="p-1 mb-2 -mt-4">
@@ -121,11 +147,14 @@ const Register = ({ registerPopover, handlePopoverClose }) => {
                                 required
                                 fullWidth
                                 onChange={handleFormChange}
+                                onBlur={handlePasswordBlur}
                                 name="password"
                                 label="Password"
                                 type="password"
                                 id="password"
                                 value={formValues.password}
+                                error={Boolean(passwordError)}
+                                helperText={passwordError}
                             />
                         </div>
                         <Button
