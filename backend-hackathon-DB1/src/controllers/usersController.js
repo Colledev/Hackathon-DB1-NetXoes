@@ -4,6 +4,10 @@ const { validationResultCheck } = require("../validators/index");
 const { isUniqueEmailError } = require("../utils/errorMessages");
 const { generateToken } = require("../middlewares/authentication");
 
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
+
 const createUserController = async (req, res) => {
     if (validationResultCheck(req, res)) {
         return;
@@ -37,7 +41,61 @@ const loginUserController = async (req, res) => {
     }
 };
 
+const listMyUserController = async (req, res) => {
+    try {
+        const loggedUserId = req.loggedUser.id;
+
+        const user = await prisma.user.findUnique({
+            where: { id: loggedUserId },
+            select: {
+                name: true,
+                email: true,
+            },
+        });
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+};
+
+const updateMyUserController = async (req, res) => {
+    if (validationResultCheck(req, res)) {
+        return;
+    }
+    try {
+        const loggedUserId = req.loggedUser.id;
+        const { name, email, password } = req.body;
+
+        const existingUserWithEmail = await prisma.user.findFirst({
+            where: {
+                email,
+                id: { not: loggedUserId },
+            },
+        });
+
+        if (existingUserWithEmail) {
+            return res.status(400).json({ error: "Email already in use" });
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id: loggedUserId },
+            data: {
+                name,
+                email,
+                password: hashPassword(password),
+            },
+        });
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+};
+
 module.exports = {
     createUserController,
     loginUserController,
+    listMyUserController,
+    updateMyUserController,
 };
