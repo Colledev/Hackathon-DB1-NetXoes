@@ -169,27 +169,11 @@ const deleteItemCart = async (req, res) => {
             return res.status(403).json({ error: "Forbidden" });
         }
 
-        if (itemCart.quantity > 1) {
-            const updatedItemCart = await prisma.itemCart.update({
-                where: {
-                    id: id,
-                },
-                data: {
-                    quantity: itemCart.quantity - 1,
-                },
-                include: {
-                    product: {
-                        include: {
-                            brand: true,
-                            installment: true,
-                        },
-                    },
-                },
-            });
-
-            res.status(200).json(updatedItemCart);
-            return;
-        }
+        await prisma.itemCart.delete({
+            where: {
+                id: id,
+            },
+        });
 
         res.status(204).end();
     } catch (error) {
