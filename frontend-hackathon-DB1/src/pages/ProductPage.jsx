@@ -68,11 +68,9 @@ const ProductPage = () => {
     };
 
     const capCategoryId = "clwbm6967000392cmrenuwr1l";
-
     const isCapCategory = product.categoryId === capCategoryId;
 
     return (
-        //sm: md: lg: xl:
         <>
             <div className="flex mt-24">
                 <IconButton
@@ -98,9 +96,9 @@ const ProductPage = () => {
                         <img
                             src={product.imageUrl}
                             alt={product.name}
-                            className="w-full md:block lg:hidden xl:hidden"
+                            className="w-full md:block lg:hidden xl:hidden mt-4"
                         />
-                        <p className="text-2xl font-bold sm:mt-4 md:mt-8 ">
+                        <p className="text-2xl font-bold sm:mt-4 md:mt-8 mt-4">
                             R$ {product.price}
                         </p>
                         <p className="text-xs sm:text-base md:text-base lg:text-lg xl:text-lg text-gray-500">
@@ -128,53 +126,6 @@ const ProductPage = () => {
                             Add to cart
                         </button>
                     </div>
-                    <div>
-                        <Colors />
-                    </div>
-                    <div>
-                        <h2 className="lg:text-lg xl:text-lg mb-[-5px] mt-12">
-                            Description:
-                        </h2>
-                        <p className="text-lg sm:text-base md:text-lg lg:text-base xl:text-base mt-2">
-                            {product.description}
-                        </p>
-                        <h1 className="font-bold text-4xl sm:text-4xl md:text-4xl lg:text-3xl xl:text-4xl sm:mb-4 md:mb-4">
-                            {product.name}
-                        </h1>
-                        <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            className="w-full md:block lg:hidden xl:hidden"
-                        />
-                        <p className="text-2xl font-bold sm:mt-4 md:mt-8 ">
-                            R$ {product.price}
-                        </p>
-                        <p className="text-xs sm:text-base md:text-base lg:text-lg xl:text-lg text-gray-500">
-                            or {product.installment.number} {"x"} of R${" "}
-                            {product.installment.formattedInstallment}
-                        </p>
-                        <div className="mt-4">
-                            <SizeSelector isCap={isCapCategory} />
-                        </div>
-                        <div>
-                            <Colors />
-                        </div>
-                        <div>
-                            <h2 className="lg:text-lg xl:text-lg mb-[-5px] mt-12">
-                                Description:
-                            </h2>
-                            <p className="text-lg sm:text-base md:text-lg lg:text-base xl:text-base mt-2">
-                                {product.description}
-                            </p>
-                        </div>
-                        <button
-                            className="w-full hover:bg-gray-500 bg-black text-white font-bold py-2 px-4 rounded mt-16 mb-4"
-                            onClick={() => handleAddToCart(product.id)}
-                        >
-                            Add to cart
-                        </button>
-                    </div>
-
                     {/* Image lg and xl  */}
                     <div className="md:flex-1 md:order-3 lg:order-first xl:order-first mt-8">
                         <img
