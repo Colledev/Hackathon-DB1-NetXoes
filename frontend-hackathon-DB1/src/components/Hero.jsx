@@ -42,7 +42,7 @@ const Hero = () => {
     return (
         <div className="relative pt-16">
             <Swiper
-                spaceBetween={50}
+                spaceBetween={-1}
                 slidesPerView={1}
                 onSlideChange={(swiper) => updateCurrentImageIndex(swiper)}
                 onSwiper={(swiper) => setSwiper(swiper)}
