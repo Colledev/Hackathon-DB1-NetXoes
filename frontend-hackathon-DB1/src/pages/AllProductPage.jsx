@@ -15,6 +15,7 @@ const AllProductPage = () => {
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [orderBy, setOrderBy] = useState("");
+    const search = new URLSearchParams(location.search).get("search");
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -29,6 +30,7 @@ const AllProductPage = () => {
                             category: selectedCategories,
                             order: orderBy.order,
                             sort: orderBy.sort,
+                            name: search,
                         },
                     }
                 );
@@ -45,7 +47,7 @@ const AllProductPage = () => {
         };
 
         fetchProducts();
-    }, [page, selectedBrands, selectedCategories, orderBy]);
+    }, [page, selectedBrands, selectedCategories, orderBy, search]);
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
