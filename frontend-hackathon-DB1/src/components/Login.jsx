@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import Register from "./Register";
 import axios from "axios";
 import LocalStorageHelper from "../helpers/localstorage-helper";
+import { validateEmail, validatePassword } from "../validators/user";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -31,6 +32,8 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
         email: "",
         password: "",
     });
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -74,6 +77,14 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
         setIsLoginForm(!isLoginForm);
     };
 
+    const handleEmailBlur = () => {
+        setEmailError(validateEmail(formValues.email));
+    };
+
+    const handlePasswordBlur = () => {
+        setPasswordError(validatePassword(formValues.password));
+    };
+
     return (
         <>
             {isLoginForm ? (
@@ -99,12 +110,15 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
                                 required
                                 fullWidth
                                 onChange={handleFormChange}
+                                onBlur={handleEmailBlur}
                                 id="email"
                                 label="Email"
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
                                 value={formValues.email}
+                                error={Boolean(emailError)}
+                                helperText={emailError}
                             />
                         </div>
                         <div className="p-1 mb-2 -mt-4">
@@ -113,12 +127,15 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
                                 required
                                 fullWidth
                                 onChange={handleFormChange}
+                                onBlur={handlePasswordBlur}
                                 name="password"
                                 label="Password"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
                                 value={formValues.password}
+                                error={Boolean(passwordError)}
+                                helperText={passwordError}
                             />
                         </div>
                         <Button
