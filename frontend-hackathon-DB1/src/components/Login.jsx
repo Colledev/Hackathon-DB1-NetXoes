@@ -57,7 +57,6 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
             );
 
             const { token } = response.data;
-            console.log("token", token);
 
             LocalStorageHelper.setToken(token);
 

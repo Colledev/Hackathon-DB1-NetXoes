@@ -4,9 +4,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalStorageHelper from "../helpers/localstorage-helper";
+import FavoriteAlert from "../utils/FavoriteAlert";
+import UnauthorizedAlert from "../utils/UnauthorizedAlert";
 
 const Favorite = ({ product }) => {
     const [isFavorited, setIsFavorited] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [showUnauthorizedAlert, setShowUnauthorizedAlert] = useState(false);
 
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -36,10 +40,14 @@ const Favorite = ({ product }) => {
         fetchFavorites();
     }, [product]);
 
+    const handleCloseUnauthorizedAlert = () => {
+        setShowUnauthorizedAlert(false);
+    };
+
     const handleFavorite = async () => {
         try {
             if (!LocalStorageHelper.isAuthenticated()) {
-                alert("You must be logged in to favorite a product.");
+                setShowUnauthorizedAlert(true);
                 return;
             }
 
@@ -68,7 +76,7 @@ const Favorite = ({ product }) => {
                     }
                 );
             }
-
+            setShowAlert(true);
             setIsFavorited(!isFavorited);
         } catch (error) {
             console.error("Error toggling favorite:", error);
@@ -76,14 +84,26 @@ const Favorite = ({ product }) => {
     };
 
     return (
-        <IconButton
-            aria-label={
-                isFavorited ? "Remove from favorites" : "Add to favorites"
-            }
-            onClick={handleFavorite}
-        >
-            {isFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-        </IconButton>
+        <>
+            <IconButton
+                aria-label={
+                    isFavorited ? "Remove from favorites" : "Add to favorites"
+                }
+                onClick={handleFavorite}
+            >
+                {isFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+            <FavoriteAlert
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+                isFavorited={isFavorited}
+            />
+            <UnauthorizedAlert
+                showAlert={showUnauthorizedAlert}
+                setShowAlert={setShowUnauthorizedAlert}
+                handleCloseAlert={handleCloseUnauthorizedAlert}
+            />
+        </>
     );
 };
 

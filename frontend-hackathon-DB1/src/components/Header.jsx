@@ -8,11 +8,15 @@ import Login from "./Login";
 import MyAccount from "./MyAccount";
 import LocalStorageHelper from "../helpers/localstorage-helper";
 import IconButton from "@mui/material/IconButton";
+import Cart from "./Cart";
+import UnauthorizedAlert from "../utils/UnauthorizedAlert";
 
 const Header = () => {
     const navigate = useNavigate();
     const [loginPopover, setLoginPopover] = useState(null);
     const [myAccountPopover, setMyAccountPopover] = useState(null);
+    const [cartOpen, setCartOpen] = useState(false);
+    const [showUnauthorizedAlert, setShowUnauthorizedAlert] = useState(false);
     const isAuthenticated = LocalStorageHelper.isAuthenticated();
 
     const handleLogo = () => {
@@ -20,13 +24,15 @@ const Header = () => {
     };
 
     const handleFavorite = () => {
-        if (isAuthenticated) {
-            navigate("/favorites");
+        if (!isAuthenticated) {
+            setShowUnauthorizedAlert(true);
         } else {
-            alert(
-                "You must be logged in to view your favorites. Please log in."
-            );
+            navigate("/favorites");
         }
+    };
+
+    const handleCloseUnauthorizedAlert = () => {
+        setShowUnauthorizedAlert(false);
     };
 
     const handlePopoverOpen = (event) => {
@@ -43,6 +49,14 @@ const Header = () => {
 
     const handleMyAccountPopoverClose = () => {
         setMyAccountPopover(null);
+    };
+
+    const handleCartOpen = () => {
+        setCartOpen(true);
+    };
+
+    const handleCartClose = () => {
+        setCartOpen(false);
     };
 
     return (
@@ -80,7 +94,6 @@ const Header = () => {
                     >
                         <FavoriteBorderIcon style={{ cursor: "pointer" }} />
                     </IconButton>
-
                     {isAuthenticated ? (
                         <IconButton
                             size="medium"
@@ -107,6 +120,7 @@ const Header = () => {
                         size="medium"
                         aria-label="search"
                         color="inherit"
+                        onClick={handleCartOpen}
                     >
                         <ShoppingCartIcon />
                     </IconButton>
@@ -123,6 +137,14 @@ const Header = () => {
                     handlePopoverClose={handlePopoverClose}
                 />
             )}
+
+            <Cart open={cartOpen} onClose={handleCartClose} />
+
+            <UnauthorizedAlert
+                showAlert={showUnauthorizedAlert}
+                setShowAlert={setShowUnauthorizedAlert}
+                handleCloseAlert={handleCloseUnauthorizedAlert}
+            />
         </div>
     );
 };
