@@ -13,6 +13,10 @@ const MyAccount = ({ anchorEl, handlePopoverClose }) => {
         window.location.reload();
     };
 
+    const handleProfile = () => {
+        navigate("/profile");
+    };
+
     const open = Boolean(anchorEl);
     const id = open ? "my-account-popover" : undefined;
 
@@ -35,7 +39,10 @@ const MyAccount = ({ anchorEl, handlePopoverClose }) => {
                 <h1 className="text-xl">My Account</h1>
                 <div className="p-1 mt-2">
                     <div className="flex justify-center">
-                        <button className="text-gray-500 hover:text-black text-base lg:text-base xl:text-xl">
+                        <button
+                            className="text-gray-500 hover:text-black text-base lg:text-base xl:text-xl"
+                            onClick={handleProfile}
+                        >
                             <ManageAccountsIcon />
                             Profile
                         </button>
