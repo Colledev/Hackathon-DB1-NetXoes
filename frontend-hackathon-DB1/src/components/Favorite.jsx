@@ -76,11 +76,15 @@ const Favorite = ({ product }) => {
                     }
                 );
             }
-            setShowAlert(true);
             setIsFavorited(!isFavorited);
+            setShowAlert(true); // Definir showAlert como true após adicionar/remover favorito com sucesso
         } catch (error) {
             console.error("Error toggling favorite:", error);
         }
+    };
+
+    const handleCloseAlert = () => {
+        setShowAlert(false); // Fechar o alerta quando necessário
     };
 
     return (
@@ -95,8 +99,8 @@ const Favorite = ({ product }) => {
             </IconButton>
             <FavoriteAlert
                 showAlert={showAlert}
-                setShowAlert={setShowAlert}
-                isFavorited={isFavorited}
+                handleCloseAlert={handleCloseAlert} // Passar a função para fechar o alerta
+                isAdded={!isFavorited} // Definir se o produto foi adicionado ou removido dos favoritos
             />
             <UnauthorizedAlert
                 showAlert={showUnauthorizedAlert}

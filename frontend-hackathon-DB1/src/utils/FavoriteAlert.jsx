@@ -11,12 +11,12 @@ const FavoriteAlert = ({ showAlert, handleCloseAlert, isAdded }) => {
         >
             <Alert
                 onClose={handleCloseAlert}
-                severity={isAdded ? "success" : "info"}
+                severity={isAdded ? "info" : "success"}
                 sx={{ width: "100%" }}
             >
                 {isAdded
-                    ? "Product added to favorites!"
-                    : "Product removed from favorites."}
+                    ? "Product removed from favorites."
+                    : "Product added to favorites!"}
             </Alert>
         </Snackbar>
     );
