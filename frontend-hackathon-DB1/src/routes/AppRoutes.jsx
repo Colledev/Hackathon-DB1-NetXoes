@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import ProductPage from "../pages/ProductPage";
 import AllProductPage from "../pages/AllProductPage";
 import FavoritePage from "../pages/FavoritePage";
+import Profile from "../pages/Profile";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
     return (
@@ -38,9 +40,22 @@ const AppRoutes = () => {
             <Route
                 path="/favorites"
                 element={
-                    <Layout showHero={false}>
-                        <FavoritePage />
-                    </Layout>
+                    <PrivateRoute>
+                        <Layout showHero={false}>
+                            <FavoritePage />
+                        </Layout>
+                    </PrivateRoute>
+                }
+            ></Route>
+
+            <Route
+                path="/profile"
+                element={
+                    <PrivateRoute>
+                        <Layout showHero={false}>
+                            <Profile />
+                        </Layout>
+                    </PrivateRoute>
                 }
             ></Route>
         </Routes>
