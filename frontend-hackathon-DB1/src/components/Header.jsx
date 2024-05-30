@@ -18,6 +18,12 @@ const Header = () => {
     const [cartOpen, setCartOpen] = useState(false);
     const [showUnauthorizedAlert, setShowUnauthorizedAlert] = useState(false);
     const isAuthenticated = LocalStorageHelper.isAuthenticated();
+    const [search, setSearch] = useState("");
+
+    const handleSearch = () => {
+        navigate(`/products?search=${search}`);
+        window.location.reload();
+    };
 
     const handleLogo = () => {
         navigate("/");
@@ -28,6 +34,12 @@ const Header = () => {
             setShowUnauthorizedAlert(true);
         } else {
             navigate("/favorites");
+        }
+    };
+
+    const handleEnterKeyPress = (event) => {
+        if (event.key === "Enter") {
+            handleSearch();
         }
     };
 
@@ -77,11 +89,15 @@ const Header = () => {
                             placeholder="Search..."
                             aria-label="search"
                             className="w-full px-2 py-1 focus:outline-none"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onKeyPress={handleEnterKeyPress}
                         />
                         <IconButton
                             size="medium"
                             aria-label="search"
                             color="inherit"
+                            onClick={handleSearch}
                         >
                             <SearchIcon />
                         </IconButton>

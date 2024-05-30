@@ -3,8 +3,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from "@mui/icons-material/Clear";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     "label + &": {
@@ -44,6 +47,7 @@ const Filter = ({ onFilterChange }) => {
     const [order, setOrder] = useState("");
     const [selectedOrder, setSelectedOrder] = useState("");
     const [sort, setSort] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBrands = async () => {
@@ -123,6 +127,11 @@ const Filter = ({ onFilterChange }) => {
         return selected.length === 0 ? "Sort By:" : `Sort By: ${selected}`;
     };
 
+    const clearFilters = () => {
+        navigate("/products");
+        window.location.reload();
+    };
+
     return (
         <div className="flex flex-col lg:flex-row px-4 sm:px-4 md:px-8 lg:px-16 xl:px-40 mt-2">
             <div className="mb-2 md:mb-0 md:mr-2">
@@ -169,24 +178,38 @@ const Filter = ({ onFilterChange }) => {
                     </Select>
                 </FormControl>
             </div>
-            <div className="ml-0 lg:ml-auto">
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <Select
-                        labelId="order-select-label"
-                        id="order-select"
-                        displayEmpty
-                        value={selectedOrder}
-                        onChange={handleOrderSortChange}
-                        input={<BootstrapInput />}
-                        renderValue={(selected) => getOrderLabel(selected)}
+            <div className="lg:ml-auto flex items-center">
+                <div className="ml-auto">
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <Select
+                            labelId="order-select-label"
+                            id="order-select"
+                            displayEmpty
+                            value={selectedOrder}
+                            onChange={handleOrderSortChange}
+                            input={<BootstrapInput />}
+                            renderValue={(selected) => getOrderLabel(selected)}
+                        >
+                            {orderOptions.map((option) => (
+                                <MenuItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </div>
+                <div className="mr-4 lg:ml-auto">
+                    <IconButton
+                        aria-label="clear-filters"
+                        color="inherit"
+                        onClick={clearFilters}
                     >
-                        {orderOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                        <ClearIcon />
+                    </IconButton>
+                </div>
             </div>
         </div>
     );
