@@ -33,7 +33,6 @@ const loginUser = async (user) => {
         throw new Error("Invalid e-mail or password");
         return;
     }
-    delete userFound.password;
     return userFound;
 };
 

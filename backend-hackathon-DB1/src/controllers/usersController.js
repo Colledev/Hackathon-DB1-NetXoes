@@ -2,7 +2,7 @@ const { createUser, loginUser } = require("../repositorys/usersRepository");
 const { hashPassword } = require("../utils/password");
 const { validationResultCheck } = require("../validators/index");
 const { isUniqueEmailError } = require("../utils/errorMessages");
-const { generateToken } = require("../utils/token");
+const { generateToken } = require("../middlewares/authentication");
 
 const createUserController = async (req, res) => {
     if (validationResultCheck(req, res)) {
@@ -26,9 +26,11 @@ const loginUserController = async (req, res) => {
         return;
     }
     try {
-        const user = await loginUser(req.body);
+        const { email, password } = req.body;
+        const user = await loginUser({ email, password });
 
         const token = generateToken(user);
+
         res.status(200).json({ token, message: "Login successful" });
     } catch (error) {
         res.status(400).send({ message: error.message });
