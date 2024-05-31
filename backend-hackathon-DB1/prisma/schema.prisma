@@ -17,6 +17,7 @@ model User {
   favorites     Favorite[]
   itemCarts     ItemCart[]
   carts Cart[]
+  orders Order[]
 }
 
 model Category {
@@ -76,13 +77,26 @@ model ItemCart {
   productId String
   quantity  Int
   carts Cart[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   @@unique([userId, productId])
 }
 
 model Cart {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [userId], references: [id])
   userId    String
   items     ItemCart[]
+  concluded Boolean   @default(false)
+  order    Order[]
+}
+
+model Order {
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  cart      Cart      @relation(fields: [cartId], references: [id])
+  cartId    String
+  createdAt DateTime  @default(now())
 }
