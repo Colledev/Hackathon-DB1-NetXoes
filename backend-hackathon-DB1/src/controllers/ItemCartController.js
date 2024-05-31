@@ -10,6 +10,9 @@ const listItemCart = async (req, res) => {
             where: {
                 userId: loggedUserId,
             },
+            orderBy: {
+                createdAt: "asc",
+            },
             include: {
                 product: {
                     include: {
@@ -109,7 +112,7 @@ const updateItemCart = async (req, res) => {
         const loggedUserId = req.loggedUser.id;
 
         const { id } = req.params;
-        const { quantity } = req.body;
+        let { quantity } = req.body;
 
         const itemCart = await prisma.itemCart.findUnique({
             where: {
@@ -123,6 +126,15 @@ const updateItemCart = async (req, res) => {
 
         if (itemCart.userId !== loggedUserId) {
             return res.status(403).json({ error: "Forbidden" });
+        }
+
+        if (quantity < 1) {
+            await prisma.itemCart.delete({
+                where: {
+                    id: id,
+                },
+            });
+            return res.status(204).end();
         }
 
         const updatedItemCart = await prisma.itemCart.update({
