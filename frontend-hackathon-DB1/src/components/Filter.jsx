@@ -178,8 +178,8 @@ const Filter = ({ onFilterChange }) => {
                     </Select>
                 </FormControl>
             </div>
-            <div className="lg:ml-auto flex items-center">
-                <div className="ml-auto">
+            <div className="ml-0 lg:ml-auto flex items-center">
+                <div className="">
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
                         <Select
                             labelId="order-select-label"
@@ -201,7 +201,7 @@ const Filter = ({ onFilterChange }) => {
                         </Select>
                     </FormControl>
                 </div>
-                <div className="mr-4 lg:ml-auto">
+                <div className="mr-4 ml-auto">
                     <IconButton
                         aria-label="clear-filters"
                         color="inherit"

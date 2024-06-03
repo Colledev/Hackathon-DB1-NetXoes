@@ -67,6 +67,9 @@ const Login = ({ loginPopover, handlePopoverClose }) => {
             window.location.reload();
         } catch (error) {
             console.error("Error logging in:", error);
+
+            setEmailError("Invalid email or password.");
+            setPasswordError("Invalid email or password.");
         }
     };
 
