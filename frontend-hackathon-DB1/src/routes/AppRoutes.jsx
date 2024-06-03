@@ -6,6 +6,7 @@ import AllProductPage from "../pages/AllProductPage";
 import FavoritePage from "../pages/FavoritePage";
 import Profile from "../pages/Profile";
 import PrivateRoute from "./PrivateRoute";
+import Order from "../pages/Order";
 
 const AppRoutes = () => {
     return (
@@ -54,6 +55,17 @@ const AppRoutes = () => {
                     <PrivateRoute>
                         <Layout showHero={false}>
                             <Profile />
+                        </Layout>
+                    </PrivateRoute>
+                }
+            ></Route>
+
+            <Route
+                path="/orders"
+                element={
+                    <PrivateRoute>
+                        <Layout showHero={false}>
+                            <Order />
                         </Layout>
                     </PrivateRoute>
                 }

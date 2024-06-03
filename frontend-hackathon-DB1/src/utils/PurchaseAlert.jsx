@@ -2,23 +2,23 @@ import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
-const CartAlert = ({ showAlert, handleCloseAlert }) => {
+const PurchaseAlert = ({ showAlert, handleCloseAlert }) => {
     return (
         <Snackbar
             open={showAlert}
             autoHideDuration={6000}
             onClose={handleCloseAlert}
-            sx={{ zIndex: 9999 }}
+            sx={{ zIndex: 10 }}
         >
             <Alert
                 onClose={handleCloseAlert}
                 severity="success"
                 sx={{ width: "100%" }}
             >
-                Product added to cart!
+                Purchase concluded!
             </Alert>
         </Snackbar>
     );
 };
 
-export default CartAlert;
+export default PurchaseAlert;
