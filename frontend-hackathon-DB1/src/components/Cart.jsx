@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import LocalStorageHelper from "../helpers/localstorage-helper";
+import PurchaseAlert from "../utils/PurchaseAlert";
 
 const fetchCartItems = async (setCartItems, calculateTotal) => {
     try {
@@ -37,6 +38,7 @@ const fetchCartItems = async (setCartItems, calculateTotal) => {
 const Cart = ({ open, onClose }) => {
     const [cartItems, setCartItems] = useState([]);
     const [cartTotal, setCartTotal] = useState(0);
+    const [showPurchaseAlert, setShowPurchaseAlert] = useState(false);
 
     const updateCart = async () => {
         try {
@@ -112,6 +114,38 @@ const Cart = ({ open, onClose }) => {
         }
     };
 
+    const concludePurchase = async () => {
+        try {
+            if (!LocalStorageHelper.isAuthenticated()) {
+                return;
+            }
+
+            await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/cart/conclude`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${LocalStorageHelper.getToken()}`,
+                    },
+                }
+            );
+
+            setCartItems([]);
+            setCartTotal(0);
+
+            setShowPurchaseAlert(true);
+        } catch (error) {
+            console.error(
+                "An error occurred while concluding purchase:",
+                error
+            );
+        }
+    };
+
+    const handleClosePurchaseAlert = () => {
+        setShowPurchaseAlert(false);
+    };
+
     const DrawerContent = (
         <Box
             sx={{ width: 300 }}
@@ -128,99 +162,114 @@ const Cart = ({ open, onClose }) => {
             </Box>
             <Divider />
             <List>
-                {cartItems.map((item) => (
-                    <ListItem key={item.id} disablePadding>
-                        <div className="px-2 py-1 w-full">
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginBottom: "15px",
-                                    boxShadow:
-                                        "1.5px 1.2px 2px 0.8px rgba(0, 0, 0, 0.1)",
-                                }}
-                            >
-                                <img
-                                    src={item.product.imageUrl}
-                                    alt="Product"
-                                    width="90"
-                                />
-                                <Box
-                                    sx={{
-                                        flexGrow: 1,
-                                        marginLeft: "10px",
-                                        marginTop: "2px",
-                                    }}
-                                >
-                                    <div>
-                                        <h1 className="text-gray-500 text-xs mb-[-5px]">
-                                            {item.product.brand.name}
-                                        </h1>
-                                    </div>
-                                    <div>
-                                        <h1 className="mb-0 text-sm">
-                                            {item.product.name}
-                                        </h1>
-                                    </div>
+                {cartItems.length === 0 ? (
+                    <ListItem>
+                        <div className="flex justify-center w-full">
+                            <h1 className="text-xl">Cart is empty</h1>
+                        </div>
+                    </ListItem>
+                ) : (
+                    <>
+                        {cartItems.map((item) => (
+                            <ListItem key={item.id} disablePadding>
+                                <div className="px-2 py-1 w-full">
                                     <Box
                                         sx={{
                                             display: "flex",
                                             alignItems: "center",
-                                            gap: "8px",
+                                            marginBottom: "15px",
+                                            boxShadow:
+                                                "1.5px 1.2px 2px 0.8px rgba(0, 0, 0, 0.1)",
                                         }}
                                     >
-                                        <IconButton
-                                            size="small"
-                                            aria-label="remove"
-                                            onClick={() =>
-                                                handleEditItemQuantity(
-                                                    item.id,
-                                                    item.quantity - 1
-                                                )
-                                            }
+                                        <img
+                                            src={item.product.imageUrl}
+                                            alt="Product"
+                                            width="90"
+                                        />
+                                        <Box
+                                            sx={{
+                                                flexGrow: 1,
+                                                marginLeft: "10px",
+                                                marginTop: "2px",
+                                            }}
                                         >
-                                            <RemoveIcon />
-                                        </IconButton>
-                                        <div>
-                                            <h1 className="text-sm ml-[10px]">
-                                                {" "}
-                                                {item.quantity}
-                                            </h1>
-                                        </div>
-                                        <IconButton
-                                            sx={{ marginLeft: "10px" }}
-                                            size="small"
-                                            aria-label="add"
-                                            onClick={() =>
-                                                handleEditItemQuantity(
-                                                    item.id,
-                                                    item.quantity + 1
-                                                )
-                                            }
-                                        >
-                                            <AddIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            sx={{ marginLeft: "20px" }}
-                                            size="small"
-                                            aria-label="delete"
-                                            onClick={() =>
-                                                handleRemoveFromCart(item.id)
-                                            }
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                            <div>
+                                                <h1 className="text-gray-500 text-xs mb-[-5px]">
+                                                    {item.product.brand.name}
+                                                </h1>
+                                            </div>
+                                            <div>
+                                                <h1 className="mb-0 text-sm">
+                                                    {item.product.name}
+                                                </h1>
+                                            </div>
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "8px",
+                                                }}
+                                            >
+                                                <IconButton
+                                                    size="small"
+                                                    aria-label="remove"
+                                                    onClick={() =>
+                                                        handleEditItemQuantity(
+                                                            item.id,
+                                                            item.quantity - 1
+                                                        )
+                                                    }
+                                                >
+                                                    <RemoveIcon />
+                                                </IconButton>
+                                                <div>
+                                                    <h1 className="text-sm ml-[10px]">
+                                                        {" "}
+                                                        {item.quantity}
+                                                    </h1>
+                                                </div>
+                                                <IconButton
+                                                    sx={{ marginLeft: "10px" }}
+                                                    size="small"
+                                                    aria-label="add"
+                                                    onClick={() =>
+                                                        handleEditItemQuantity(
+                                                            item.id,
+                                                            item.quantity + 1
+                                                        )
+                                                    }
+                                                >
+                                                    <AddIcon />
+                                                </IconButton>
+                                                <IconButton
+                                                    sx={{ marginLeft: "20px" }}
+                                                    size="small"
+                                                    aria-label="delete"
+                                                    onClick={() =>
+                                                        handleRemoveFromCart(
+                                                            item.id
+                                                        )
+                                                    }
+                                                >
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Box>
+                                            <div className="text-sm ml-4 font-bold mb-2">
+                                                <p>
+                                                    R${" "}
+                                                    {item.product.price.toFixed(
+                                                        2
+                                                    )}
+                                                </p>
+                                            </div>
+                                        </Box>
                                     </Box>
-                                    <div className="text-sm ml-4 font-bold mb-2">
-                                        <p>
-                                            R$ {item.product.price.toFixed(2)}
-                                        </p>
-                                    </div>
-                                </Box>
-                            </Box>
-                        </div>
-                    </ListItem>
-                ))}
+                                </div>
+                            </ListItem>
+                        ))}
+                    </>
+                )}
             </List>
 
             <Divider />
@@ -229,7 +278,10 @@ const Cart = ({ open, onClose }) => {
                     <h2>Total: R$ {cartTotal.toFixed(2)}</h2>
                 </div>
                 <Box textAlign="center" mt={2}>
-                    <button className="w-3/3 hover:bg-gray-500 bg-black text-white font-bold rounded p-4">
+                    <button
+                        className="w-3/3 hover:bg-gray-500 bg-black text-white font-bold rounded p-4"
+                        onClick={concludePurchase}
+                    >
                         Complete Purchase
                     </button>
                 </Box>
@@ -238,9 +290,15 @@ const Cart = ({ open, onClose }) => {
     );
 
     return (
-        <Drawer anchor="right" open={open} onClose={onClose}>
-            {DrawerContent}
-        </Drawer>
+        <>
+            <Drawer anchor="right" open={open} onClose={onClose}>
+                {DrawerContent}
+                <PurchaseAlert
+                    showAlert={showPurchaseAlert}
+                    handleCloseAlert={handleClosePurchaseAlert}
+                />
+            </Drawer>
+        </>
     );
 };
 

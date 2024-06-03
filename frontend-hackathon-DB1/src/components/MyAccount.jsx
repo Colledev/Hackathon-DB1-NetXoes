@@ -4,6 +4,7 @@ import LocalStorageHelper from "../helpers/localstorage-helper";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 const MyAccount = ({ anchorEl, handlePopoverClose }) => {
     const navigate = useNavigate();
@@ -15,6 +16,10 @@ const MyAccount = ({ anchorEl, handlePopoverClose }) => {
 
     const handleProfile = () => {
         navigate("/profile");
+    };
+
+    const handleOrder = () => {
+        navigate("/orders");
     };
 
     const open = Boolean(anchorEl);
@@ -43,19 +48,28 @@ const MyAccount = ({ anchorEl, handlePopoverClose }) => {
                             className="text-gray-500 hover:text-black text-base lg:text-base xl:text-xl"
                             onClick={handleProfile}
                         >
-                            <ManageAccountsIcon />
+                            <ManageAccountsIcon className="mb-1" />
                             Profile
                         </button>
                     </div>
-                </div>
-                <div className="flex justify-center p-1 mt-2">
-                    <button
-                        className="text-gray-500 hover:text-black text-base lg:text-base xl:text-xl"
-                        onClick={handleLogout}
-                    >
-                        <LogoutIcon />
-                        Logout
-                    </button>
+                    <div className="flex justify-center mt-2">
+                        <button
+                            className="text-gray-500 hover:text-black text-base lg:text-base xl:text-xl"
+                            onClick={handleOrder}
+                        >
+                            <LocalMallIcon className="mb-1" />
+                            Orders
+                        </button>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                        <button
+                            className="text-gray-500 hover:text-black text-base lg:text-base xl:text-xl"
+                            onClick={handleLogout}
+                        >
+                            <LogoutIcon className="mb-1" />
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </Box>
         </Popover>
