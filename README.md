@@ -78,6 +78,29 @@ This is a project focused on completing the Bootcamp offered by DB1 GROUP and Be
 
 ## Screenshots
 
+- Home Page
+
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/27c02c61-de8b-478e-ab32-a0ab1349c5c7)
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/09fb58bf-687d-4de6-9aa9-9c084d90aeb7)
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/5766047e-cb1a-471d-85de-3716d4b89900)
+
+- Products Page
+
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/f332ea7d-1b5b-4abe-8f08-163af98fe2df)
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/3a641b2d-f52f-4d25-9926-a3a08e47fe75)
+
+- Specific Product Page
+
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/411142cb-98d3-4ea8-a609-c637b592e0c5)
+
+- Favorite Page
+
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/ddc51be3-6732-4b6e-a17b-03e210b156d3)
+
+- Order Page
+
+![image](https://github.com/Colledev/Hackathon-DB1-NetXoes/assets/112740912/a94ca860-5147-4fc7-be3e-6a888512cd0c)
+
 ## License
 
 This project is licensed under the MIT License.
