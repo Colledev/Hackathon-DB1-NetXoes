@@ -6,6 +6,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
+import { useLocation } from "react-router-dom";
 
 const AllProductPage = () => {
     const [products, setProducts] = useState([]);
@@ -15,6 +16,7 @@ const AllProductPage = () => {
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [orderBy, setOrderBy] = useState("");
+    const location = useLocation();
     const search = new URLSearchParams(location.search).get("search");
 
     useEffect(() => {
