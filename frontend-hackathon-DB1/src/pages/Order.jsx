@@ -78,13 +78,13 @@ const Order = () => {
                                 className="border-2 border-gray-200 p-4 m-4 mb-8"
                             >
                                 <div className="flex justify-between">
-                                    <h2 className="mb-0 text-2xl font-bold">
+                                    <h2 className="text-2xl font-bold">
                                         {
                                             ordersByCartId[cartId][0].cart
                                                 .concludedAt
                                         }
                                     </h2>
-                                    <h2 className="mb-4 text-lg text-gray-500 ">
+                                    <h2 className="text-lg text-gray-500 ">
                                         {" "}
                                         COMPLETED
                                     </h2>
