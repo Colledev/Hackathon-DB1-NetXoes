@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import CircleIcon from "@mui/icons-material/Circle";
 import IconButton from "@mui/material/IconButton";
 
