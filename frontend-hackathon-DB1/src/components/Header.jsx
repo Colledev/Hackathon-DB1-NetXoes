@@ -10,6 +10,7 @@ import LocalStorageHelper from "../helpers/localstorage-helper";
 import IconButton from "@mui/material/IconButton";
 import Cart from "./Cart";
 import UnauthorizedAlert from "../utils/UnauthorizedAlert";
+import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -19,6 +20,8 @@ const Header = () => {
     const [showUnauthorizedAlert, setShowUnauthorizedAlert] = useState(false);
     const isAuthenticated = LocalStorageHelper.isAuthenticated();
     const [search, setSearch] = useState("");
+
+    const ButtonQuery = useMediaQuery("(min-width:600px)");
 
     const handleSearch = () => {
         navigate(`/products?search=${search}`);
@@ -76,14 +79,14 @@ const Header = () => {
             <div className="container mx-auto flex justify-between items-center">
                 <div>
                     <button
-                        className="text-3xl font-bold text-black"
+                        className="text-lg sm:text-3xl font-bold text-black"
                         onClick={handleLogo}
                     >
                         NetXoes
                     </button>
                 </div>
-                <div className="flex gap-4">
-                    <div className="flex items-center border border-gray-300 rounded p-0.5 max-w-md">
+                <div className="flex gap-2 sm:gap-4">
+                    <div className="flex items-center border border-gray-300 rounded p-0.5 max-w-md ml-4">
                         <input
                             type="text"
                             placeholder="Search..."
@@ -94,34 +97,42 @@ const Header = () => {
                             onKeyPress={handleEnterKeyPress}
                         />
                         <IconButton
-                            size="medium"
+                            size={ButtonQuery ? "medium" : "small"}
                             aria-label="search"
                             color="inherit"
                             onClick={handleSearch}
                         >
-                            <SearchIcon />
+                            <SearchIcon
+                                fontSize={ButtonQuery ? "medium" : "small"}
+                            />
                         </IconButton>
                     </div>
                     <IconButton
-                        size="medium"
+                        size={ButtonQuery ? "medium" : "small"}
                         aria-label="search"
                         color="inherit"
                         onClick={handleFavorite}
                     >
-                        <FavoriteBorderIcon style={{ cursor: "pointer" }} />
+                        <FavoriteBorderIcon
+                            style={{ cursor: "pointer" }}
+                            fontSize={ButtonQuery ? "medium" : "small"}
+                        />
                     </IconButton>
                     {isAuthenticated ? (
                         <IconButton
-                            size="medium"
+                            size={ButtonQuery ? "medium" : "small"}
                             aria-label="search"
                             color="inherit"
                             onClick={handleMyAccountPopoverOpen}
                         >
-                            <PersonIcon style={{ cursor: "pointer" }} />
+                            <PersonIcon
+                                style={{ cursor: "pointer" }}
+                                fontSize={ButtonQuery ? "medium" : "small"}
+                            />
                         </IconButton>
                     ) : (
                         <IconButton
-                            size="medium"
+                            size={ButtonQuery ? "medium" : "small"}
                             aria-label="search"
                             color="inherit"
                             onClick={handlePopoverOpen}
@@ -129,16 +140,19 @@ const Header = () => {
                             <PersonIcon
                                 aria-describedby="login-popover"
                                 style={{ cursor: "pointer" }}
+                                fontSize={ButtonQuery ? "medium" : "small"}
                             />
                         </IconButton>
                     )}
                     <IconButton
-                        size="medium"
+                        size={ButtonQuery ? "medium" : "small"}
                         aria-label="search"
                         color="inherit"
                         onClick={handleCartOpen}
                     >
-                        <ShoppingCartIcon />
+                        <ShoppingCartIcon
+                            fontSize={ButtonQuery ? "medium" : "small"}
+                        />
                     </IconButton>
                 </div>
             </div>
